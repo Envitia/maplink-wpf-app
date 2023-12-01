@@ -15,7 +15,7 @@ Everyone is welcome to contribute to this repository.
 ## Try Envitia MapLink Pro
 [Get an evaluation copy of MapLink Pro](mailto:info@envitia.com?subject=I%20want%20to%20evaluate%20MapLink%20Pro%20please)
 ## Licensing
-Copyright 2022 Envitia Ltd
+Copyright 2023 Envitia Ltd
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
