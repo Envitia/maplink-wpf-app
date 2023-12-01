@@ -3,7 +3,7 @@
 
 ## Introduction
 
-This repository contains sample code demonstrating the usage of Envitia's MapLink Pro SDKs.
+A generic WPF mapping application, demonstrating the usage of Envitia's MapLink Pro SDKs.
 
 ## Envitia MapLink Pro
 Envitia’s software technology for mission system developers, enabling them to create high performance geospatial intelligence, situational awareness and map-based systems. Feature rich and proven in demanding operational systems, Envitia’s MapLink Pro provides system integrators and OEMs with the application control and flexibility they need while minimising delivery time and cost.
