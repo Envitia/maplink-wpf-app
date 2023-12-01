@@ -8,7 +8,7 @@ namespace MapLinkProApp.MapLayers
 {
   /// <summary>
   /// Visualisation of geospatial data loaded in its native format.
-  /// Currently only works for vector data (SHP etc.).
+  /// Works for vector data (SHP etc.) and raster.
   /// Uses Direct Import so only the vector formats listed here [https://www.envitia.com/technologies/products/maplink-pro/userguide/fileformats_page.html#Vector_Formats]
   /// and marked as supported by the Direct Import SDK, are supported.
   /// </summary>

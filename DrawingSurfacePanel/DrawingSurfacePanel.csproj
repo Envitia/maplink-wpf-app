@@ -114,12 +114,12 @@
         <Reference Include="Envitia.MapLink.InteractionModes64">
           <SpecificVersion>False</SpecificVersion>
           <Private>True</Private>
-          <HintPath>..\..\..\..\..\..\..\bin64\Envitia.MapLink.InteractionModes64.dll</HintPath>
+          <HintPath>$(MAPL_PATH)\Envitia.MapLink.InteractionModes64.dll</HintPath>
         </Reference>
         <Reference Include="Envitia.MapLink64">
           <SpecificVersion>False</SpecificVersion>
           <Private>True</Private>
-          <HintPath>..\..\..\..\..\..\..\bin64\Envitia.MapLink64.dll</HintPath>
+          <HintPath>$(MAPL_PATH)\Envitia.MapLink64.dll</HintPath>
         </Reference>
       </ItemGroup>
     </When>
