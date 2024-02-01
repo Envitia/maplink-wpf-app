@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Envitia.MapLink.Grids;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace MapLinkProApp.MapLayers
     public string Property { get; set; } = "";
     public string FeatureType { get; set; } = "";
     public string DataLocation { get; set; } = "";
+    public string TerrainLocation { get; set; } = "";
     public bool IsFoundationLayer { get; set; } = false;
+    public string Name { get; set; } = "";
 
     public int Opacity { get; set; } = 100;
 
@@ -34,6 +37,17 @@ namespace MapLinkProApp.MapLayers
     public int Z { get; set; }
 
     public abstract Envitia.MapLink.TSLNDataLayer GetDataLayer();
+
+    public abstract Envitia.MapLink.Terrain.TSLNTerrainDatabase GetTerrainDatabase();
+
+    /// <summary>
+    /// Returns a DataGrid if the layer contains one. This is applicable only to Ascii Grid at the moment
+    /// </summary>
+    /// <returns></returns>
+    public virtual DataGrid GetDataGrid()
+    {
+      return null;
+    }
 
     /// <summary>
     /// Configure the map layer.

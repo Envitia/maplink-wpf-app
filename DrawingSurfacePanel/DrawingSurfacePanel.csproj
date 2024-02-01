@@ -128,6 +128,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DrawLineInteractionMode.cs" />
     <Compile Include="IPanel.cs" />
     <Compile Include="MapViewerPanel.cs">
       <SubType>Component</SubType>

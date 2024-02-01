@@ -9,13 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\dock-vert.png" />
+	<None Remove="img\max.png" />
+	<None Remove="img\min-right.png" />
     <None Remove="img\drop-down.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\DrawingSurfacePanel\DrawingSurfacePanel.csproj" />
+    <ProjectReference Include="..\Envitia.MapLink.Grids\Envitia.MapLink.Grids.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Envitia.MapLink.DirectImport64">
       <HintPath>$(MAPL_PATH)\Envitia.MapLink.DirectImport64.dll</HintPath>
     </Reference>
+	<Reference Include="Envitia.MapLink.Grids.Wpf">
+      <HintPath>..\Envitia.MapLink.Grids.Wpf\bin\Debug\net5.0-windows\Envitia.MapLink.Grids.Wpf.dll</HintPath>
+    </Reference>
+	<Reference Include="Envitia.MapLink.InteractionModes64">
+	  <HintPath>..\..\..\..\..\Program Files\Envitia\MapLink Pro\11.0\bin64\Envitia.MapLink.InteractionModes64.dll</HintPath>
+	</Reference>
     <Reference Include="Envitia.MapLink.NativeHelpers">
       <HintPath>$(MAPL_PATH)\Envitia.MapLink.NativeHelpers.dll</HintPath>
     </Reference>
@@ -37,7 +51,22 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Resource Include="img\min-right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  
+  <ItemGroup>
     <Resource Include="img\drop-down.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="img\dock-vert.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\max.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -48,9 +77,19 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+	<Compile Update="VerticalSlice.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>VerticalSlice.xaml.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ColourScales.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+	<None Update="CrossSectionColours.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="img\cropped-envitia_emb_transparentbg-192x192.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -63,6 +102,12 @@
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+	<None Update="soundspeed.ctr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="temperature.ctr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
