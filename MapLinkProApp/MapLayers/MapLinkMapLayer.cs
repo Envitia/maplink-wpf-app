@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Envitia.MapLink;
+using Envitia.MapLink.Terrain;
 
 namespace MapLinkProApp.MapLayers
 {
@@ -12,6 +14,7 @@ namespace MapLinkProApp.MapLayers
   public class MapLinkMapLayer : MapLayer
   {
     private Envitia.MapLink.TSLNDataLayer DataLayer { get; set; }
+    private Envitia.MapLink.Terrain.TSLNTerrainDatabase TerrainDatabase { get; set; }
 
     public override void ConfigureMapLayer(TSLN2DDrawingSurface surface, bool visible, double depth)
     {
@@ -31,13 +34,36 @@ namespace MapLinkProApp.MapLayers
       if (DataLayer != null)
         return DataLayer;
 
+      string errors = "";
+
       DataLayer = new Envitia.MapLink.TSLNMapDataLayer();
       if (!DataLayer.loadData(DataLocation))
       {
         DataLayer = null;
+        string error = TSLNErrorStack.errorString("\nErrors:\n");
+        errors += "Failed to load data: " + Property + error + "\n";
+      }
+
+      if (errors.Length > 0)
+      {
+        System.Windows.MessageBox.Show(errors);
       }
 
       return DataLayer;
-    }    
+    }
+
+    public override TSLNTerrainDatabase GetTerrainDatabase()
+    {
+      if (TerrainDatabase != null)
+        return TerrainDatabase;
+
+      TerrainDatabase = new Envitia.MapLink.Terrain.TSLNTerrainDatabase();
+      if (TerrainDatabase.open(TerrainLocation) != Envitia.MapLink.Terrain.TSLNTerrainReturn.TSLNTerrain_OK)
+      {
+        TerrainDatabase = null;
+      }
+
+      return TerrainDatabase;
+    }
   }
 }

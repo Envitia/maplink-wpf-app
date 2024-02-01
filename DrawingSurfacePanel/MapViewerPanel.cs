@@ -23,7 +23,7 @@ namespace DrawingSurfacePanel
   /// <summary>
   /// Summary description for drawingSurfacePanel.
   /// </summary>
-  public class MapViewerPanel : Panel, IPanel
+  public class MapViewerPanel : Panel, IPanel, DrawLineInterationMode.IObserver
   {
     public IPanel GetIPanel() { return this; }
 
@@ -37,7 +37,7 @@ namespace DrawingSurfacePanel
       TOOLS_DRAW_LINE
     }
 
-    struct contextMenuTool
+    struct ContextMenuTool
     {
       public TSLNInteractionMode interactionMode;
       public InteractionModeEnum mode;
@@ -45,15 +45,18 @@ namespace DrawingSurfacePanel
       public bool ischecked;
     }
 
-    contextMenuTool[] m_contextMenuTools;
+    private ContextMenuTool[] ContextMenuTools { get; set; }
 
-    private InteractionModeEnum m_currentInteractionMode;
+    private InteractionModeEnum CurrentInteractionMode { get; set; }
 
     //Create out request receiver pointer
-    private InteractionModeRequestReceiver m_updateReceiver = null;
+    private InteractionModeRequestReceiver UpdateReceiver { get; set; } = null;
 
     //Create interaction modes' pointers
-    private TSLNInteractionModeManagerGeneric m_modeManager = null;
+    private TSLNInteractionModeManagerGeneric ModeManager { get; set; } = null;
+
+    // The interaction mode to draw a line on the map.
+    public DrawLineInterationMode DrawLineInterationMode { get; set; } = new DrawLineInterationMode((int)InteractionModeEnum.TOOLS_DRAW_LINE);
 
     public TSLNStandardDataLayer GeometryLayer { get; } = new TSLNStandardDataLayer();
 
@@ -62,19 +65,27 @@ namespace DrawingSurfacePanel
     //Create the usual MapLink Item pointers
     public DrawingSurfaceClass DrawingSurface { get; set; }
 
+    // context menu when right click is clicked
+    ContextMenuStrip ContextMenu { get; set; } = null;
+
+    public event rightClickCurrentModeChangeHandler RightClickCurrentModeChange;
+    public delegate void rightClickCurrentModeChangeHandler();
+
     #endregion
 
     #region Panel_Contructors
 
     public MapViewerPanel()
     {
-      initializeComponent();
+      InitializeComponent();
       //! Set Maplink Home directory here ...
       string maplHome = TSLNUtilityFunctions.getMapLinkHome();
       if (string.IsNullOrEmpty(maplHome))
       {
         TSLNUtilityFunctions.setMapLinkHome("../");
       }
+
+      DrawLineInterationMode.Observers.Add(this);
 
       //! Initialise drawing surface
       Envitia.MapLink.TSLNDrawingSurface.loadStandardConfig();
@@ -84,7 +95,7 @@ namespace DrawingSurfacePanel
 
     ~MapViewerPanel()
     {
-      cleanUp();
+      CleanUp();
     }
     #endregion
 
@@ -92,7 +103,7 @@ namespace DrawingSurfacePanel
 
     private MapViewerParentPanel ViewerPanel;
 
-    private void initializeComponent()
+    private void InitializeComponent()
     {
       //! define the panel's controls
       this.ViewerPanel = new MapViewerParentPanel();
@@ -134,9 +145,9 @@ namespace DrawingSurfacePanel
       }
 
       // Don't forget to draw any echo rectangle that may be active.
-      if (m_modeManager != null)
+      if (ModeManager != null)
       {
-        m_modeManager.onDraw(e.ClipRectangle.Left + leftOffset, e.ClipRectangle.Top, e.ClipRectangle.Right, e.ClipRectangle.Bottom - bottomOffset);
+        ModeManager.onDraw(e.ClipRectangle.Left + leftOffset, e.ClipRectangle.Top, e.ClipRectangle.Right, e.ClipRectangle.Bottom - bottomOffset);
       }
     }
 
@@ -147,9 +158,9 @@ namespace DrawingSurfacePanel
       {
         DrawingSurface.wndResize(ViewerPanel.DisplayRectangle.Left, ViewerPanel.DisplayRectangle.Top, ViewerPanel.DisplayRectangle.Right, ViewerPanel.DisplayRectangle.Bottom, false, TSLNResizeActionEnum.TSLNResizeActionMaintainCentre);
       }
-      if (m_modeManager != null)
+      if (ModeManager != null)
       {
-        m_modeManager.onSize(ViewerPanel.DisplayRectangle.Width, ViewerPanel.DisplayRectangle.Height);
+        ModeManager.onSize(ViewerPanel.DisplayRectangle.Width, ViewerPanel.DisplayRectangle.Height);
       }
 
       // Without the invalidate, the paint is only called when the window gets bigger
@@ -159,7 +170,7 @@ namespace DrawingSurfacePanel
     //On mouse down on the ViewerPanel
     private void OnMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return;
       }
@@ -170,17 +181,17 @@ namespace DrawingSurfacePanel
       {
         case MouseButtons.Left:
           {
-            invalidate = m_modeManager.onLButtonDown(e.X, e.Y, false, false);
+            invalidate = ModeManager.onLButtonDown(e.X, e.Y, false, false);
             break;
           }
         case MouseButtons.Middle:
           {
-            invalidate = m_modeManager.onMButtonDown(e.X, e.Y, false, false);
+            invalidate = ModeManager.onMButtonDown(e.X, e.Y, false, false);
             break;
           }
         case MouseButtons.Right:
           {
-            invalidate = m_modeManager.onRButtonDown(e.X, e.Y, false, false);
+            invalidate = ModeManager.onRButtonDown(e.X, e.Y, false, false);
             break;
           }
       }
@@ -192,7 +203,7 @@ namespace DrawingSurfacePanel
     //On mouse move on the ViewerPanel
     private void OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return;
       }
@@ -205,7 +216,7 @@ namespace DrawingSurfacePanel
       else if (e.Button == MouseButtons.Right)
         button = TSLNButtonType.TSLNButtonRight;
 
-      if (m_modeManager.onMouseMove(button, e.X, e.Y, false, false))
+      if (ModeManager.onMouseMove(button, e.X, e.Y, false, false))
       {
         // Request a redraw if the interaction hander requires it
         ViewerPanel.Invalidate();
@@ -215,7 +226,7 @@ namespace DrawingSurfacePanel
     //On mouse up on the ViewerPanel
     private void OnMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return;
       }
@@ -225,16 +236,17 @@ namespace DrawingSurfacePanel
       {
         case MouseButtons.Left:
           {
-            invalidate = m_modeManager.onLButtonUp(e.X, e.Y, false, false);
+            invalidate = ModeManager.onLButtonUp(e.X, e.Y, false, false);
             break;
           }
         case MouseButtons.Middle:
           {
-            invalidate = m_modeManager.onMButtonUp(e.X, e.Y, false, false);
+            invalidate = ModeManager.onMButtonUp(e.X, e.Y, false, false);
             break;
           }
         case MouseButtons.Right:
           {
+            ShowRClickContextMenu(e);
             break;
           }
       }
@@ -248,11 +260,11 @@ namespace DrawingSurfacePanel
     //On mouse wheel on the ViewerPanel
     private void OnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return;
       }
-      if (m_modeManager.onMouseWheel((short)e.Delta, e.X, e.Y))
+      if (ModeManager.onMouseWheel((short)e.Delta, e.X, e.Y))
       {
         ViewerPanel.Invalidate();
       }
@@ -260,7 +272,92 @@ namespace DrawingSurfacePanel
 
     private void OnDestroyed(object sender, System.EventArgs e)
     {
-      cleanUp();
+      CleanUp();
+    }
+
+    /// <summary>
+    /// initialize the context menu by setting the options
+    /// </summary>
+    private void InitializeRClickContextMenu()
+    {
+      if (ContextMenu != null)
+        return;
+
+      ContextMenu = new ContextMenuStrip();
+      for (int idx = 0; idx < ContextMenuTools.Length; ++idx)
+      {
+        ContextMenu.Items.Add(ContextMenuTools[idx].text);
+        ((ToolStripMenuItem)ContextMenu.Items[idx]).Checked = ContextMenuTools[idx].ischecked;
+      }
+    }
+
+    /// <summary>
+    /// when a check menu item is chosen, it unchecks other options
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="contexMenuuu"></param>
+    /// <param name="tools"></param>
+    private void UpdateContextMenuToolChecked(InteractionModeEnum mode, ContextMenuStrip contexMenuuu, ContextMenuTool[] tools)
+    {
+      if (contexMenuuu == null)
+        return;
+
+      for (int idx = 0; idx < ContextMenuTools.Length; ++idx)
+      {
+        ((ToolStripMenuItem)contexMenuuu.Items[idx]).Checked = ContextMenuTools[idx].mode == mode;
+      }
+    }
+
+    private void UpdateRightClickModeChangeEvent()
+    {
+      if (this.RightClickCurrentModeChange != null)
+      {
+        this.RightClickCurrentModeChange();
+      }
+    }
+
+    /// <summary>
+    /// show right click context menu
+    /// </summary>
+    /// <param name="e"></param>
+    private void ShowRClickContextMenu(System.Windows.Forms.MouseEventArgs e)
+    {
+      if (ContextMenu == null)
+        return;
+
+      ContextMenu.Show(PointToScreen(e.Location));
+      ContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(
+          ContexMenuuu_ItemClicked);
+    }
+
+    /// <summary>
+    /// handles when an option is chosen from the right click context menu.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ContexMenuuu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+    {
+      ToolStripItem item = e.ClickedItem;
+      // your code here
+      switch (item.Text)
+      {
+        case "Grab Tool":
+          if (CurrentInteractionMode != InteractionModeEnum.TOOLS_GRAB)
+          {
+            SetCurrentMode(InteractionModeEnum.TOOLS_GRAB);
+            UpdateRightClickModeChangeEvent();
+          }
+          break;
+
+        case "Draw Slice":
+          if (CurrentInteractionMode != InteractionModeEnum.TOOLS_DRAW_LINE)
+          {
+            SetCurrentMode(InteractionModeEnum.TOOLS_DRAW_LINE);
+            UpdateRightClickModeChangeEvent();
+          }
+          break;
+      }
+
     }
 
     #endregion
@@ -280,17 +377,17 @@ namespace DrawingSurfacePanel
       DrawingSurface.setOption(TSLNOptionEnum.TSLNOptionAntiAliasMonoRasters, true);
 #endif
 
-      m_updateReceiver = new InteractionModeRequestReceiver();
+      UpdateReceiver = new InteractionModeRequestReceiver();
       // Attach the drawing surface to the form and set it's initial size...
       // This must be done before the drawingsurface is given to the
       // InteractionModeManager
       DrawingSurface.attach(ViewerPanel.Handle, false);
 
       // Create our user defined request receiver
-      TSLNInteractionModeRequest request = (TSLNInteractionModeRequest)m_updateReceiver;
+      TSLNInteractionModeRequest request = (TSLNInteractionModeRequest)UpdateReceiver;
 
       // Now create the mode manager
-      m_modeManager = new TSLNInteractionModeManagerGeneric(request, DrawingSurface, 5, 5, 30, true);
+      ModeManager = new TSLNInteractionModeManagerGeneric(request, DrawingSurface, 5, 5, 30, true);
 
       // Next create our modes
       InitializeInteractionModes();
@@ -298,18 +395,20 @@ namespace DrawingSurfacePanel
       //Give them to the interaction mode manager
       //Remember we don't own the modes anymore after this point
       //but we must keep a reference to them or c# won't deleted them properly
-      foreach (var tool in m_contextMenuTools)
+      foreach (var tool in ContextMenuTools)
       {
-        m_modeManager.addMode(tool.interactionMode, tool.ischecked);
+        ModeManager.addMode(tool.interactionMode, tool.ischecked);
       }
 
       DrawingSurface.wndResize(ViewerPanel.DisplayRectangle.Left, ViewerPanel.DisplayRectangle.Top, ViewerPanel.DisplayRectangle.Right, ViewerPanel.DisplayRectangle.Bottom, false, TSLNResizeActionEnum.TSLNResizeActionMaintainCentre);
-      m_modeManager.onSize(ViewerPanel.DisplayRectangle.Width, ViewerPanel.DisplayRectangle.Height);
+      ModeManager.onSize(ViewerPanel.DisplayRectangle.Width, ViewerPanel.DisplayRectangle.Height);
 
       DrawingSurface.setOption(TSLNOptionEnum.TSLNOptionDoubleBuffered, true);
       
       //activate grab imode
-      setCurrentMode(InteractionModeEnum.TOOLS_GRAB);
+      SetCurrentMode(InteractionModeEnum.TOOLS_GRAB);
+
+      InitializeRClickContextMenu();
 
       DrawingSurface.reset(false);
     }
@@ -358,27 +457,32 @@ namespace DrawingSurfacePanel
     public void EnsureInteractionLayersVisible()
     {
       EnsureVisible(GeometryLayer, "Geometry");
+      EnsureVisible(DrawLineInterationMode.Overlay, "DrawLineInterationMode.Overlay");
     }  
 
     private void InitializeInteractionModes()
     {
-      m_contextMenuTools = new contextMenuTool[]
+      ContextMenuTools = new ContextMenuTool[]
       {
-        new contextMenuTool { mode = InteractionModeEnum.TOOLS_GRAB, text = "Grab Tool", ischecked = false},
+        new ContextMenuTool { mode = InteractionModeEnum.TOOLS_GRAB, text = "Grab Tool", ischecked = false},
+        new ContextMenuTool { mode = InteractionModeEnum.TOOLS_DRAW_LINE, text = "Draw Slice", ischecked = false}
       };
 
-      for (int i = 0; i < m_contextMenuTools.Length; ++i)
+      for (int i = 0; i < ContextMenuTools.Length; ++i)
       {
-        switch (m_contextMenuTools[i].text)
+        switch (ContextMenuTools[i].text)
         {
           case "Grab Tool":
-            m_contextMenuTools[i].interactionMode = new TSLNInteractionModeGrab((int)InteractionModeEnum.TOOLS_GRAB, true, "Left button drag move view, Right button click to finish", true);
+            ContextMenuTools[i].interactionMode = new TSLNInteractionModeGrab((int)InteractionModeEnum.TOOLS_GRAB, true, "Left button drag move view, Right button click to finish", true);
+            break;
+          case "Draw Slice":
+            ContextMenuTools[i].interactionMode = DrawLineInterationMode;
             break;
         }
       }
     }
 
-    private void cleanUp()
+    private void CleanUp()
     {
       DrawingSurfaceClass.cleanup();
       DrawingSurface.Dispose();
@@ -394,62 +498,83 @@ namespace DrawingSurfacePanel
 
     #region Panel_ZoomPan_Functions
 
-    public bool setCurrentMode(InteractionModeEnum mode)
+    public bool SetCurrentMode(InteractionModeEnum mode)
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return false;
       }
 
       bool invalidate = false;
-      for (int i = 0; i < m_contextMenuTools.Length; ++i)
+      for (int i = 0; i < ContextMenuTools.Length; ++i)
       {
-        if (mode == m_contextMenuTools[i].mode)
+        if (mode == ContextMenuTools[i].mode)
         {
-          invalidate = m_modeManager.setCurrentMode((int)mode);
+          invalidate = ModeManager.setCurrentMode((int)mode);
           break;
         }
       }
 
       if (invalidate)
       {
-        m_currentInteractionMode = mode;
+        CurrentInteractionMode = mode;
+        UpdateContextMenuToolChecked(mode, ContextMenu, ContextMenuTools);
         ViewerPanel.Invalidate();
       }
 
       return invalidate;
+    }
+
+    public InteractionModeEnum GetCurrentMode()
+    {
+      if (ModeManager == null)
+      {
+        return InteractionModeEnum.InValid;
+      }
+
+      TSLNInteractionMode cmode = null;
+      long id = ModeManager.getCurrentMode(out cmode);
+      foreach (var tool in ContextMenuTools)
+      {
+        if (id == (int)tool.mode)
+        {
+          return tool.mode;
+        }
+      }
+
+      return InteractionModeEnum.InValid;
     }
 
     #endregion
 
     #region Panel_StackViews_Functions
-    public bool saveView(int index)
+    public bool SaveView(int index)
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return false;
       }
-      bool invalidate = m_modeManager.savedViewSetToCurrent(index);
+      bool invalidate = ModeManager.savedViewSetToCurrent(index);
       return invalidate;
     }
 
-    public bool viewStackReset()
+    public bool ViewStackReset()
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return false;
       }
-      bool invalidate = m_modeManager.savedViewReset();
+      bool invalidate = ModeManager.savedViewReset();
       return invalidate;
     }
 
-    public bool gotoSavedView(int index)
+    public bool GotoSavedView(int index)
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return false;
       }
-      bool invalidate = m_modeManager.savedViewGoto(index);
+      bool invalidate = ModeManager.savedViewGoto(index);
       if (invalidate)
       {
         ViewerPanel.Invalidate();
@@ -457,13 +582,13 @@ namespace DrawingSurfacePanel
       return invalidate;
     }
 
-    public bool viewStackGotoPrevious()
+    public bool ViewStackGotoPrevious()
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return false;
       }
-      bool invalidate = m_modeManager.viewStackGotoPrevious();
+      bool invalidate = ModeManager.viewStackGotoPrevious();
       if (invalidate)
       {
         ViewerPanel.Invalidate();
@@ -471,18 +596,29 @@ namespace DrawingSurfacePanel
       return invalidate;
     }
 
-    public bool viewStackGotoNext()
+    public bool ViewStackGotoNext()
     {
-      if (m_modeManager == null)
+      if (ModeManager == null)
       {
         return false;
       }
-      bool invalidate = m_modeManager.viewStackGotoNext();
+      bool invalidate = ModeManager.viewStackGotoNext();
       if (invalidate)
       {
         ViewerPanel.Invalidate();
       }
       return invalidate;
+    }
+
+    void DrawLineInterationMode.IObserver.Invalidate()
+    {
+      ViewerPanel.Invalidate();
+      base.Invalidate();
+    }
+
+    void DrawLineInterationMode.IObserver.NewLine(Tuple<double, double> startMu, Tuple<double, double> endMu)
+    {
+      EnsureInteractionLayersVisible();
     }
 
     #endregion

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using System.Configuration;
 using System.Xml;
+using Envitia.MapLink.Grids;
 
 namespace MapLinkProApp
 {
   /// <summary>
   /// Map management.
   /// </summary>
-  class Maps
+  public class Maps
   {
     public List<MapLayers.MapLayer> MapLayers { get; set; } = new List<MapLayers.MapLayer>();
 
@@ -39,9 +38,13 @@ namespace MapLinkProApp
           Property = mapLayerNode.SelectSingleNode("Property").InnerText,
           FeatureType = mapLayerNode.SelectSingleNode("FeatureType").InnerText,
           DataLocation = Environment.ExpandEnvironmentVariables(mapLayerNode.SelectSingleNode("DataLocation").InnerText),
+          TerrainLocation = mapLayerNode.SelectSingleNode("TerrainLocation") == null ? "" : mapLayerNode.SelectSingleNode("TerrainLocation").InnerText,
           IsFoundationLayer = mapLayerNode.SelectSingleNode("FoundationLayer") != null,
           Z = mapLayerNode.SelectSingleNode("Z") == null ? 0 : int.Parse(mapLayerNode.SelectSingleNode("Z").InnerText),
         };
+        // TRhere could be multiple layers with the same properties, but for different layers
+        // We are creating a unique layer name here
+        mapLayer.Name = mapLayer.Depth == Double.MaxValue ? mapLayer.Property : mapLayer.Property + " " + mapLayer.Depth.ToString();
 
         if (mapLayer.IsFoundationLayer)
         {
@@ -55,6 +58,26 @@ namespace MapLinkProApp
         }
       }
 
+      // Load all grid visualisations
+      var gridNodes = mapLayersNode.SelectNodes("GridMapLayer");
+      foreach (XmlNode gridNode in gridNodes)
+      {
+        var mapLayer = new MapLayers.AsciiGridMapLayer
+        {
+          Depth = gridNode.SelectSingleNode("Depth") == null ? MapLinkProApp.MapLayers.MapLayer.ALL_DEPTHS : Convert.ToDouble(gridNode.SelectSingleNode("Depth").InnerText),
+          Property = gridNode.SelectSingleNode("Property").InnerText,
+          FeatureType = gridNode.SelectSingleNode("FeatureType").InnerText,
+          DataLocation = gridNode.SelectSingleNode("DataLocation").InnerText,
+          TerrainLocation = gridNode.SelectSingleNode("TerrainLocation") == null ? "" : gridNode.SelectSingleNode("TerrainLocation").InnerText,
+          Z = gridNode.SelectSingleNode("Z") == null ? 5 : int.Parse(gridNode.SelectSingleNode("Z").InnerText),
+        };
+        // TRhere could be multiple layers with the same properties, but for different layers
+        // We are creating a unique layer name here
+        mapLayer.Name = mapLayer.Depth == Double.MaxValue ? mapLayer.Property : mapLayer.Property + " " + mapLayer.Depth.ToString();
+
+        MapLayers.Add(mapLayer);
+      }
+
       // Load all native (Direct Import) map layers.
       var nativeLayerNodes = mapLayersNode.SelectNodes("NativeMapLayer");
 
@@ -66,8 +89,12 @@ namespace MapLinkProApp
           Property = nativeLayerNode.SelectSingleNode("Property").InnerText,
           FeatureType = nativeLayerNode.SelectSingleNode("FeatureType").InnerText,
           DataLocation = Environment.ExpandEnvironmentVariables(nativeLayerNode.SelectSingleNode("DataLocation").InnerText),
+          TerrainLocation = nativeLayerNode.SelectSingleNode("TerrainLocation") == null ? "" : nativeLayerNode.SelectSingleNode("TerrainLocation").InnerText,
           Z = nativeLayerNode.SelectSingleNode("Z") == null ? 10 : int.Parse(nativeLayerNode.SelectSingleNode("Z").InnerText),
         };
+        // TRhere could be multiple layers with the same properties, but for different layers
+        // We are creating a unique layer name here
+        mapLayer.Name = mapLayer.Depth == Double.MaxValue ? mapLayer.Property : mapLayer.Property + " " + mapLayer.Depth.ToString();
 
         if (mapLayer.IsFoundationLayer)
         {
@@ -133,6 +160,23 @@ namespace MapLinkProApp
       }
     }
 
+    public List<double> AllDepths
+    {
+      get
+      {
+        var depths = new List<double>();
+        foreach (var layer in MapLayers)
+        {
+          if (layer.Depth != MapLinkProApp.MapLayers.MapLayer.ALL_DEPTHS)
+          {
+            depths.Add(layer.Depth);
+          }
+        }
+        depths.Sort();
+        return depths.Distinct().ToList();
+      }
+    }
+
     public List<string> AllFeatureTypes
     {
       get
@@ -144,6 +188,70 @@ namespace MapLinkProApp
         }
         return properties.Distinct().ToList();
       }
+    }
+
+    public List<Tuple<double, Envitia.MapLink.Terrain.TSLNTerrainDatabase>> DepthValues(string property)
+    {
+      var depths = new List<Tuple<double, Envitia.MapLink.Terrain.TSLNTerrainDatabase>>();
+      foreach (var layer in MapLayers)
+      {
+        if (layer.Depth != MapLinkProApp.MapLayers.MapLayer.ALL_DEPTHS
+          && layer.Property == property
+          && layer.GetTerrainDatabase() != null)
+        {
+          depths.Add(new Tuple<double, Envitia.MapLink.Terrain.TSLNTerrainDatabase>(layer.Depth, layer.GetTerrainDatabase()));
+        }
+      }
+      depths.Sort(delegate (Tuple<double, Envitia.MapLink.Terrain.TSLNTerrainDatabase> first, Tuple<double, Envitia.MapLink.Terrain.TSLNTerrainDatabase> second)
+      {
+        if (first.Item1 == second.Item1) return 0;
+        return first.Item1 < second.Item1 ? -1 : 1;
+      });
+      return depths;
+    }
+
+    // Returns a list of depths, along with the ascii files corresponding to each depth
+    public List<Tuple<double, DataGrid>> DepthGridValues(string property)
+    {
+      var depths = new List<Tuple<double, DataGrid>>();
+      foreach (var layer in MapLayers)
+      {
+        if (layer.Depth != MapLinkProApp.MapLayers.MapLayer.ALL_DEPTHS
+          && layer.Property == property
+          && layer.FeatureType == "Grid")
+        {
+          depths.Add(new Tuple<double, DataGrid>(layer.Depth, layer.GetDataGrid()));
+        }
+      }
+      depths.Sort(delegate (Tuple<double, DataGrid> first, Tuple<double, DataGrid> second)
+      {
+        if (first.Item1 == second.Item1) return 0;
+        return first.Item1 < second.Item1 ? -1 : 1;
+      });
+      return depths;
+    }
+
+    /// <summary>
+    /// Returns the list of depths for a given DataGrid
+    /// If it is not a DataGrid, it returns all depths in App config
+    /// </summary>
+    /// <param name="property">Selected Layer Property</param>
+    /// <returns>List of depths for the given layer property</returns>
+    public List<double> Depths(string property)
+    {
+      var depths = new List<double>();
+      foreach (var layer in MapLayers)
+      {
+        if (layer.Depth != MapLinkProApp.MapLayers.MapLayer.ALL_DEPTHS
+          && layer.Property == property
+          && layer.FeatureType == "Grid"
+          && layer.GetDataGrid().MaxZ != Double.MinValue
+          && layer.GetDataGrid().MinZ  != Double.MaxValue)
+        {
+          depths.Add(layer.Depth);
+        }
+      }
+      return depths.Count() == 0 ? AllDepths : depths;
     }
 
     /// <summary>
@@ -173,6 +281,14 @@ namespace MapLinkProApp
 
         layer.Opacity = transparentOverlays ? 120 : 255;
         layer.ConfigureMapLayer(surface, visible, depth);    
+      }
+    }
+
+    public void ReorderLayers(Envitia.MapLink.TSLNDrawingSurface surface)
+    {
+      foreach (var layer in MapLayers)
+      {
+        surface.bringToFront(layer.Identifier());
       }
     }
   }

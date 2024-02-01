@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ColourScales>
+  <Colours>
+    <Property>Sound Speed</Property>
+    <Path>.\soundspeed.ctr</Path>
+  </Colours>
+  <Colours>
+    <Property>Temperature</Property>
+    <Path>.\temperature.ctr</Path>
+  </Colours>
+</ColourScales>

@@ -5,23 +5,420 @@
     <Property>NaturalEarth</Property>
     <DataLocation>%MAPL_PATH%\..\Maps\NaturalEarthRaster\NaturalEarthRaster.map</DataLocation>
     <FeatureType>Raster</FeatureType>
+    <Z>1</Z>
     <FoundationLayer />
   </MapLinkMapLayer>
 
-	<MapLinkMapLayer>
-		<Property>Sussex</Property>
-		<DataLocation>%MAPL_PATH%\..\Maps\OpenStreetMap\OpenStreetMap.map</DataLocation>
-		<FeatureType>Vector</FeatureType>
-	</MapLinkMapLayer>
+  <GridMapLayer>
+    <Depth>0.5</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_0,5.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>2</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>1.5</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_1,5.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>3</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>2.6</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_2,6.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>4</Z>
+  </GridMapLayer>
+  
+  <GridMapLayer>
+    <Depth>3.8</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_3,8.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>5</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>5.1</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_5,1.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>6</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>6.4</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_6,4.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>7</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>7.9</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_7,9.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>8</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>9.6</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_9,6.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>9</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>11.4</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_11,4.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>10</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>13.5</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_13,5.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>11</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>15.8</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_15,8.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>12</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>18.5</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_18,5.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>13</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>21.6</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_21,6.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>14</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>25.2</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_25,2.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>15</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>29.4</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_29,4.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>16</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>34.4</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_34,4.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>17</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>40.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_40,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>18</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>47.4</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_47,4.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>19</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>55.8</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_55,8.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>20</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>65.8</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_65,8.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>21</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>77.9</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_77,9.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>22</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>92.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_92,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>23</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>109.7</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_109,7.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>24</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>130.7</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_130,7.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>25</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>155.9</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_155,9.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>26</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>186.1</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_186,1.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>27</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>222.5</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_222,5.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>28</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>266</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_266,0.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>29</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>318.1</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_318,1.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>30</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>380.2</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_380,2.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>31</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>453.9</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_453,9.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>32</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>541.1</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_541,1.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>33</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>643.6</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_643,6.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>34</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>763.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_763,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>35</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>902.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_902,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>36</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>1062.4</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_1062,4.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>37</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>1245.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_1245,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>38</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>1452.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_1452,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>39</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>1684.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_1684,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>40</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>1941.9</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_1941,9.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>41</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>2225.1</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_2225,1.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>42</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>2533.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_2533,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>43</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>2865.7</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_2865,7.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>44</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>3220.8</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_3220,8.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>45</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>3597</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_3597,0.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>46</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>3992.5</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_3992,5.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>47</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>4405.2</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_4405,2.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>48</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>4833.3</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_4833,3.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>49</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>5274.8</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_5274,8.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>50</Z>
+  </GridMapLayer>
+
+  <GridMapLayer>
+    <Depth>5727.9</Depth>
+    <Property>Temperature</Property>
+    <DataLocation>..\..\..\griddata\temperature\ASCII\cmems_mod_glo_phy-thetao_anfc_0,083deg_P1D-m_1702458667101_5727,9.asc</DataLocation>
+    <FeatureType>Grid</FeatureType>
+    <Z>51</Z>
+  </GridMapLayer>
 
   <NativeMapLayer>
     <Property>StatesProvinces</Property>
     <DataLocation>%MAPL_PATH%\..\data\Natural Earth\50M\50m_cultural\ne_50m_admin_1_states_provinces_shp.shp</DataLocation>
     <FeatureType>Vector</FeatureType>
+    <Z>52</Z>
   </NativeMapLayer>
   <NativeMapLayer>
     <Property>Glasgow</Property>
     <DataLocation>..\..\..\Maps\raster\Glasgow.tif</DataLocation>
     <FeatureType>Raster</FeatureType>
+    <Z>53</Z>
   </NativeMapLayer>
 </MapLayers>

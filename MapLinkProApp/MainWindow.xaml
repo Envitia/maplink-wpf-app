@@ -27,15 +27,69 @@
     <local:OverlayControl x:Name="OverlayContainer" >
       <Grid>
 
-      <Grid>
+        <Grid x:Name="MaximiseGrid" Margin="10">
+        </Grid>
 
-        <StackPanel Orientation="Vertical"  VerticalAlignment="Top" HorizontalAlignment="Center">
-          <Button Style="{StaticResource TabButton}" Name="LayersButton" Click="LayersButton_Click">Layers</Button>
-          <StackPanel x:Name="LayersPanel" Visibility="Collapsed" Orientation="Vertical" Background="WhiteSmoke">
-            <Label Content="Layers" HorizontalAlignment="Right"></Label>
+        <Grid x:Name="DockGrid">
+          <DockPanel>
+            <DockPanel Name="SideDockPanel" DockPanel.Dock="Right"  Margin="3" LastChildFill="True" MinWidth="500" >
+            </DockPanel>
+            <DockPanel Name="BottomDockPanel" DockPanel.Dock="Bottom" Margin="3" LastChildFill="True" VerticalAlignment="Bottom" MinHeight="400" >
+            </DockPanel>
+          </DockPanel>
+        </Grid>
+
+        <Grid x:Name="FloatingWindowGrid">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0" Name="VertFloatingWindowGrid"  >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+          </Grid>
+          <Grid Grid.Row="1" Name="HorzFloatingWindowGrid" >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+          </Grid>
+        </Grid>
+        
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+          </Grid.ColumnDefinitions>
+
+          <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock>Depth Selection (m)</TextBlock>
+            <local:SliderWithCustomToolTip x:Name="DepthSelector" Template="{StaticResource VerticalSlider}" Foreground="Black" Width="70" MinHeight="800" Margin="10.0" Orientation="Vertical" TickFrequency="5" IsDirectionReversed="True" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" ValueChanged="Depth_ValueChanged"></local:SliderWithCustomToolTip>
           </StackPanel>
-        </StackPanel>
-      </Grid>
+
+          <StackPanel Grid.Column="1" Orientation="Vertical"  VerticalAlignment="Top" HorizontalAlignment="Center">
+            <Button Style="{StaticResource TabButton}" Name="LayersButton" Click="LayersButton_Click">Layers</Button>
+            <StackPanel x:Name="MainLayersPanel" Visibility="Collapsed" Orientation="Vertical" Background="WhiteSmoke">
+              <Label Content="Layers" HorizontalAlignment="Right"></Label>
+            </StackPanel>
+          </StackPanel>
+          <StackPanel Grid.Column="1" Orientation="Horizontal"  HorizontalAlignment="Right" VerticalAlignment="Center" RenderTransformOrigin=".5,.5" Margin="0,0,-115,0" >
+            <StackPanel.RenderTransform>
+              <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform Angle="90"/>
+                <TranslateTransform/>
+              </TransformGroup>
+            </StackPanel.RenderTransform>
+            <Button Style="{StaticResource TabButton}" x:Name="VerticleSliceButton" Click="VerticleSliceButton_Click">Vertical Slice</Button>
+            <Button Style="{StaticResource TabButton}" x:Name="DepthProfileButton" Click="DepthProfileButton_Click" >Depth Profile</Button>
+            <Button Style="{StaticResource TabButton}" x:Name="SecondPlanViewButton" >Second Plan View</Button>
+
+          </StackPanel>
+        </Grid>
       </Grid>
     </local:OverlayControl>
   </Grid>

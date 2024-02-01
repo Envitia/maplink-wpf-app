@@ -264,7 +264,135 @@
     <Style x:Key="StackBorder" TargetType="Border">
       <Setter Property="BorderBrush" Value="LightGray"/>
       <Setter Property="BorderThickness" Value="1"/>
-    </Style>  
-      
+    </Style>
+
+    <Style x:Key="SliderButtonStyle"
+       TargetType="{x:Type RepeatButton}">
+      <Setter Property="SnapsToDevicePixels"
+          Value="true" />
+      <Setter Property="OverridesDefaultStyle"
+          Value="true" />
+      <Setter Property="IsTabStop"
+          Value="false" />
+      <Setter Property="Focusable"
+          Value="false" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type RepeatButton}">
+            <Border Background="Transparent" />
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="SliderThumbStyle"
+       TargetType="{x:Type Thumb}">
+      <Setter Property="SnapsToDevicePixels"
+          Value="true" />
+      <Setter Property="OverridesDefaultStyle"
+          Value="true" />
+      <Setter Property="Height"
+          Value="14" />
+      <Setter Property="Width"
+          Value="45" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Thumb}">
+            <Rectangle Height="6.0" 
+                       HorizontalAlignment="Stretch"
+                       Fill="Blue"
+                       Stroke="DarkGray"
+                       StrokeThickness="1.0" />
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!--Template when the orientation of the Slider is Vertical.-->
+    <ControlTemplate x:Key="VerticalSlider"
+                 TargetType="{x:Type Slider}">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto"
+                        MinWidth="{TemplateBinding MinWidth}" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <local:SliderTickBarWithLabel x:Name="TopTick"
+             SnapsToDevicePixels="True"
+             Fill="{TemplateBinding Foreground}"
+             Placement="Left"
+             Width="4"
+             Visibility="Collapsed">
+        </local:SliderTickBarWithLabel>
+
+        <Border x:Name="TrackBackground"
+            Margin="0"
+            CornerRadius="2"
+            Width="50"
+            Grid.Column="1"
+            BorderThickness="2">
+          <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0"
+                             EndPoint="1,0">
+              <LinearGradientBrush.GradientStops>
+                <GradientStopCollection>
+                  <GradientStop Color="{DynamicResource BorderLightColor}"
+                            Offset="0.0" />
+                  <GradientStop Color="{DynamicResource BorderDarkColor}"
+                            Offset="1.0" />
+                </GradientStopCollection>
+              </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+          </Border.BorderBrush>
+        </Border>
+        <Track Grid.Column="1"
+           x:Name="PART_Track">
+          <Track.DecreaseRepeatButton>
+            <RepeatButton Style="{StaticResource SliderButtonStyle}"
+                      Command="Slider.DecreaseLarge" />
+          </Track.DecreaseRepeatButton>
+          <Track.Thumb>
+            <Thumb Style="{StaticResource SliderThumbStyle}" />
+          </Track.Thumb>
+          <Track.IncreaseRepeatButton>
+            <RepeatButton Style="{StaticResource SliderButtonStyle}"
+                      Command="Slider.IncreaseLarge" />
+          </Track.IncreaseRepeatButton>
+        </Track>
+        <local:SliderTickBarWithLabel x:Name="BottomTick"
+             SnapsToDevicePixels="True"
+             Grid.Column="2"
+             Fill="{TemplateBinding Foreground}"
+             Placement="Right"
+             Width="10"
+             Visibility="Collapsed" />
+      </Grid>
+      <ControlTemplate.Triggers>
+        <Trigger Property="TickPlacement"
+             Value="TopLeft">
+          <Setter TargetName="TopTick"
+              Property="Visibility"
+              Value="Visible" />
+        </Trigger>
+        <Trigger Property="TickPlacement"
+             Value="BottomRight">
+          <Setter TargetName="BottomTick"
+              Property="Visibility"
+              Value="Visible" />
+        </Trigger>
+        <Trigger Property="TickPlacement"
+             Value="Both">
+          <Setter TargetName="TopTick"
+              Property="Visibility"
+              Value="Visible" />
+          <Setter TargetName="BottomTick"
+              Property="Visibility"
+              Value="Visible" />
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+
   </Application.Resources>
 </Application>
