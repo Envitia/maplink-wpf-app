@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace Envitia.MapLink.Grids
     /// </summary>
     public int MaxBitmapWidth { get; set; } = 1200;
 
-    private System.Drawing.Bitmap Bitmap { get; set; }
+    private Bitmap Bitmap { get; set; }
 
     public GridLayer()
     {

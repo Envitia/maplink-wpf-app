@@ -1,32 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("Envitia MapLink Pro Drawing Surface Panel")]
-[assembly: AssemblyDescription("Provides a WPF-friendly interface to a Windows Forms panel containing a MapLink Drawing Surface")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Envitia Group PLC.")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Copyright © 1998-2023 Envitia Group PLC. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("11.0.2.0")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
