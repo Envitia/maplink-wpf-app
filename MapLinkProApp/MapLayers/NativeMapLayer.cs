@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Envitia.MapLink;
+using Envitia.MapLink.Terrain;
 
 namespace MapLinkProApp.MapLayers
 {
@@ -20,6 +21,8 @@ namespace MapLinkProApp.MapLayers
     private Envitia.MapLink.DirectImport.TSLNDirectImportDataLayer DirectImportDataLayer { get; set; } = null;
 
     private DirectImport.DirectImportCallbacks DirectImportCallbacks { get; } = new DirectImport.DirectImportCallbacks();
+
+    private Envitia.MapLink.Terrain.TSLNTerrainDatabase TerrainDatabase { get; set; }
 
     // Load data in it's native format into a direct import data layer.
     private Envitia.MapLink.DirectImport.TSLNDirectImportDataLayer CreateDirectImportDataLayer(string mapPath)
@@ -114,6 +117,20 @@ namespace MapLinkProApp.MapLayers
         return CreateDirectImportDataLayer(DataLocation);
       }
       return DirectImportDataLayer;
+    }
+
+    public override TSLNTerrainDatabase GetTerrainDatabase()
+    {
+      if (TerrainDatabase != null)
+        return TerrainDatabase;
+
+      TerrainDatabase = new Envitia.MapLink.Terrain.TSLNTerrainDatabase();
+      if (TerrainDatabase.open(TerrainLocation) != Envitia.MapLink.Terrain.TSLNTerrainReturn.TSLNTerrain_OK)
+      {
+        TerrainDatabase = null;
+      }
+
+      return TerrainDatabase;
     }
   }
 }
